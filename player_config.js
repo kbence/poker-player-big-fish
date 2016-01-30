@@ -11,7 +11,10 @@ module.exports = (function(){
 
   c.setConf = function(key, val){
     try {
-      c.conf[key] = val;
+      var new_val = parseInt(val);
+      if (!isNaN(new_val)) {
+        c.conf[key] = val;
+      }
     } catch (e) {
 
     }
