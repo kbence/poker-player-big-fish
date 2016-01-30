@@ -74,6 +74,15 @@ describe('numberOfFulls', function() {
     forAllCases(CASES, ranking.numberOfFulls);
 });
 
+describe('numberOfStraights', function() {
+    var CASES = [
+        { input: ['H4', 'D2', 'C6', 'H7', 'C9', 'D8', 'H10'], output: 0 },
+        { input: ['HK', 'CA', 'HJ', 'DQ', 'C10', 'D7', 'H7'], output: 1 },
+    ];
+
+    forAllCases(CASES, ranking.numberOfStraights);
+});
+
 describe('getHandValue', function() {
     var CASES = [
         { input: ['D3', 'HA', 'CK'], output: 17 }
