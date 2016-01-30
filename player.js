@@ -1,7 +1,7 @@
 var Player_actions = require("./player_actions");
 var ranking = require("./ranking.js");
-var minimumToCall = 10;
-var minimumToRaise = 20;
+var minimumToCall = 18;
+var minimumToRaise = 22;
 
 module.exports = {
 
