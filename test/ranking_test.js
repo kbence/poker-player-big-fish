@@ -10,6 +10,17 @@ function createCard(code) {
     return {rank:rank, suit:suit};
 }
 
+function forAllCases(cases, func) {
+    for (var c = 0; c < cases.length; c++) {
+        (function(Case) {
+            it('should return ' + Case.output + ' for ' + Case.input.join(', '), function() {
+                var input = Case.input.map(createCard);
+                assert.equal(Case.output, func(input));
+            })
+        })(cases[c]);
+    }
+}
+
 describe('numberOfPairs', function() {
     var CASES = [
         { input: ['H5', 'H6'], output: 0 },
@@ -18,20 +29,13 @@ describe('numberOfPairs', function() {
         { input: ['C6', 'H6', 'C5', 'D5', 'D7', 'H7'], output: 2 },
     ];
 
-    for (var c = 0; c < CASES.length; c++) {
-        (function(Case) {
-            it('should return ' + Case.output + ' for ' + Case.input.join(', '), function() {
-                var input = Case.input;
-                input = Case.input.map(createCard);
-                assert.equal(Case.output, ranking.numberOfPairs(input))
-            })
-        })(CASES[c]);
-    }
+    forAllCases(CASES, ranking.numberOfPairs);
 });
 
 describe('getHandValue', function() {
-    it('should return value of cards', function() {
-        var value = ranking.getHandValue([{rank: '3'}, {rank: 'A'}])
-        assert.equal(value, 17);
-    });
+    var CASES = [
+        { input: ['D3', 'HA'], output: 17 }
+    ];
+
+    forAllCases(CASES, ranking.getHandValue);
 })
