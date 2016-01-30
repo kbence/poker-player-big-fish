@@ -1,5 +1,6 @@
 var player = require('./player');
 var express = require('express');
+var conf = require('./player_config');
 var app = express();
 
 app.use(express.json());
@@ -7,6 +8,11 @@ app.use(express.urlencoded());
 
 app.get('/', function(req, res){
   res.send(200, 'OK')
+});
+
+app.get('/conf/:confkey/:confval', function(req, res) {
+  conf.setConf(req.params.confkey, req.params.confval);
+  res.send(conf.conf);
 });
 
 app.post('/', function(req, res){
