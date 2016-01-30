@@ -4,7 +4,7 @@ var ranking = require('../ranking');
 var CARD_SUITS = {'h': 'hearts', 'c': 'clubs', 's': 'spades', 'd': 'diamonds'};
 
 function createCard(code) {
-    var suit = CARD_SUITS[code.charAt(0)];
+    var suit = CARD_SUITS[code.charAt(0).toLowerCase()];
     var rank = code.substr(1);
 
     return {rank:rank, suit:suit};
@@ -41,6 +41,25 @@ describe('numberOfDrills', function() {
     ];
 
     forAllCases(CASES, ranking.numberOfDrills);
+});
+
+describe('numberOfPokers', function() {
+    var CASES = [
+        { input: ['H3', 'H6', 'H7', 'D9', 'HK'], output: 0 },
+        { input: ['DA', 'HA', 'SA', 'CA', 'HK'], output: 1 },
+    ];
+
+    forAllCases(CASES, ranking.numberOfPokers);
+});
+
+describe('numberOfFlushes', function() {
+    var CASES = [
+        { input: ['H5', 'H6'], output: 0 },
+        { input: ['H3', 'H6', 'H7', 'D9', 'HK'], output: 0 },
+        { input: ['H3', 'H6', 'H7', 'H9', 'HK'], output: 1 },
+    ];
+
+    forAllCases(CASES, ranking.numberOfFlushes);
 });
 
 describe('getHandValue', function() {

@@ -33,7 +33,9 @@ function groupBy(items, field) {
 
 WEIGHTS = {
     numberOfPairs: fromArray([0, 10, 30]),
-    numberOfDrills: fromArray([0, 35])
+    numberOfDrills: fromArray([0, 35]),
+    numberOfPokers: fromArray([0, 100]),
+    numberOfFlushes: fromArray([0, 80])
 };
 
 COUNTERS = {
@@ -43,6 +45,21 @@ COUNTERS = {
 
     numberOfDrills: function(cards) {
         return numberOfKinds(cards, 3);
+    },
+
+    numberOfPokers: function(cards) {
+        return numberOfKinds(cards, 4);
+    },
+
+    numberOfFlushes: function(cards) {
+        var result = 0;
+        var groups = groupBy(cards, 'suit');
+
+        for (var suit in groupBy(cards, 'suit')) {
+            if (groups[suit].length >= 5) result++;
+        }
+
+        return Math.min(2, result);
     }
 }
 
@@ -68,5 +85,7 @@ function getHandValue(cards) {
 module.exports = {
     numberOfPairs: COUNTERS.numberOfPairs,
     numberOfDrills: COUNTERS.numberOfDrills,
+    numberOfPokers: COUNTERS.numberOfPokers,
+    numberOfFlushes: COUNTERS.numberOfFlushes,
     getHandValue: getHandValue
 }
