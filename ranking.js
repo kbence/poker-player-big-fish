@@ -1,8 +1,21 @@
 CARD_RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k', 'a'];
-VALUES = {
-    pair: 20,
-    three: 35
-};
+
+function fromArray(arr) {
+    return function(c) {
+        return arr[c];
+    }
+}
+
+function numberOfKinds(cards, kind) {
+    var result = 0;
+    var groups = groupBy(cards, 'rank');
+
+    for (var rank in groupBy(cards, 'rank')) {
+        if (groups[rank].length == kind) result++;
+    }
+
+    return Math.min(2, result);
+}
 
 function groupBy(items, field) {
     var results = {};
@@ -18,15 +31,19 @@ function groupBy(items, field) {
     return results;
 }
 
-function numberOfPairs(cards) {
-    var result = 0;
-    var groups = groupBy(cards, 'rank');
+WEIGHTS = {
+    numberOfPairs: fromArray([0, 10, 30]),
+    numberOfDrills: fromArray([0, 35])
+};
 
-    for (var rank in groupBy(cards, 'rank')) {
-        if (groups[rank].length == 2) result++;
+COUNTERS = {
+    numberOfPairs: function(cards) {
+        return numberOfKinds(cards, 2);
+    },
+
+    numberOfDrills: function(cards) {
+        return numberOfKinds(cards, 3);
     }
-
-    return Math.min(2, result);
 }
 
 function getPairValue(cards) {
@@ -41,12 +58,15 @@ function getHandValue(cards) {
         value += rank;
     });
 
-    value += getPairValue(cards);
+    for (var func in COUNTERS) {
+        value += WEIGHTS[func](COUNTERS[func](cards));
+    }
 
     return value;
 }
 
 module.exports = {
-    numberOfPairs: numberOfPairs,
+    numberOfPairs: COUNTERS.numberOfPairs,
+    numberOfDrills: COUNTERS.numberOfDrills,
     getHandValue: getHandValue
 }

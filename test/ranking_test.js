@@ -27,9 +27,20 @@ describe('numberOfPairs', function() {
         { input: ['C6', 'H6'], output: 1 },
         { input: ['C6', 'H6', 'C5', 'D7', 'H7'], output: 2 },
         { input: ['C6', 'H6', 'C5', 'D5', 'D7', 'H7'], output: 2 },
+        { input: ['C6', 'H6', 'C6', 'D7', 'H7'], output: 1 },
     ];
 
     forAllCases(CASES, ranking.numberOfPairs);
+});
+
+describe('numberOfDrills', function() {
+    var CASES = [
+        { input: ['H5', 'H6'], output: 0 },
+        { input: ['C6', 'H6', 'C5', 'D7', 'H7'], output: 0 },
+        { input: ['C6', 'H6', 'C6', 'D7', 'H7'], output: 1 },
+    ];
+
+    forAllCases(CASES, ranking.numberOfDrills);
 });
 
 describe('getHandValue', function() {
