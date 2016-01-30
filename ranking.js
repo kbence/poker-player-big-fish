@@ -4,8 +4,33 @@ VALUES = {
     three: 35
 };
 
+function groupBy(items, field) {
+    var results = {};
+
+    items.forEach(function(item) {
+        var key = item[field];
+        if (!results[key])
+            results[key] = [];
+
+        results[key].push(item);
+    });
+
+    return results;
+}
+
+function numberOfPairs(cards) {
+    var result = 0;
+    var groups = groupBy(cards, 'rank');
+
+    for (var rank in groupBy(cards, 'rank')) {
+        if (groups[rank].length == 2) result++;
+    }
+
+    return Math.min(2, result);
+}
+
 function getPairValue(cards) {
-    return cards[0]['rank'] == cards[1]['rank'] ? VALUES.pair : 0;
+    return numberOfPairs(cards) * VALUES.pair;
 }
 
 function getHandValue(cards) {
@@ -22,5 +47,6 @@ function getHandValue(cards) {
 }
 
 module.exports = {
+    numberOfPairs: numberOfPairs,
     getHandValue: getHandValue
 }
