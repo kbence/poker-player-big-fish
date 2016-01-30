@@ -6,12 +6,30 @@ function fromArray(arr) {
     }
 }
 
-function numberOfKinds(cards, kind) {
+function between(min, max, num) {
+    return num >= min && num <= max;
+}
+
+function containsAny(array, items) {
+    for (var i = 0; i < items.length; i++) {
+        if (array.indexOf(items[i]) >= 0)
+            return true;
+    }
+
+    return false;
+}
+
+function numberOfKinds(cards, kind, ignoreOwn) {
     var result = 0;
     var groups = groupBy(cards, 'rank');
 
     for (var rank in groupBy(cards, 'rank')) {
-        if (groups[rank].length == kind) result++;
+        if (between(0, 1, groups[rank].indexOf(cards[0])) ||
+            between(0, 1, groups[rank].indexOf(cards[1])))
+        {
+            if (groups[rank].length == kind)
+                result++;
+        }
     }
 
     return Math.min(2, result);
@@ -34,8 +52,9 @@ function groupBy(items, field) {
 WEIGHTS = {
     numberOfPairs: fromArray([0, 10, 30]),
     numberOfDrills: fromArray([0, 35]),
-    numberOfPokers: fromArray([0, 100]),
-    numberOfFlushes: fromArray([0, 80])
+    numberOfPokers: fromArray([0, 200]),
+    numberOfFlushes: fromArray([0, 120]),
+    numberOfFulls: fromArray([0, 160])
 };
 
 COUNTERS = {
@@ -60,6 +79,28 @@ COUNTERS = {
         }
 
         return Math.min(2, result);
+    },
+
+    numberOfFulls: function(cards) {
+        var kinds = groupBy(cards, 'rank');
+        var foundPair = false, foundDrill = false, containsOwn = false;
+        var ownCards = cards.slice(0, 2);
+
+        for (var k in kinds) {
+            var kind = kinds[k];
+
+            if (kind.length == 2) {
+                foundPair = true;
+                if (containsAny(kind, ownCards)) { containsOwn = true; }
+            }
+
+            if (kind.length == 3) {
+                foundDrill = true;
+                if (containsAny(kind, ownCards)) { containsOwn = true; }
+            }
+        }
+
+        return (foundPair && foundDrill && containsOwn) ? 1 : 0;
     }
 }
 
@@ -70,10 +111,10 @@ function getPairValue(cards) {
 function getHandValue(cards) {
     var value = 0
 
-    cards.forEach(function(card) {
-        var rank = CARD_RANKS.indexOf(card['rank'].toLowerCase()) + 2;
+    for (var c = 0; c < 2; c++) {
+        var rank = CARD_RANKS.indexOf(cards[c]['rank'].toLowerCase()) + 2;
         value += rank;
-    });
+    }
 
     for (var func in COUNTERS) {
         value += WEIGHTS[func](COUNTERS[func](cards));
@@ -87,5 +128,6 @@ module.exports = {
     numberOfDrills: COUNTERS.numberOfDrills,
     numberOfPokers: COUNTERS.numberOfPokers,
     numberOfFlushes: COUNTERS.numberOfFlushes,
+    numberOfFulls: COUNTERS.numberOfFulls,
     getHandValue: getHandValue
 }
