@@ -2,10 +2,10 @@ module.exports = (function(){
   var c = this;
 
   c.conf = {
-    min_check: 22,
-    min_check_and_call: 28,
-    min_call: 30,
-    min_raise: 32,
+    min_check: 20,
+    min_check_and_call: 22,
+    min_call: 26,
+    min_raise: 30,
     min_allin: 40
   };
 
