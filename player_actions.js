@@ -17,7 +17,7 @@ module.exports = function(game_state){
   
   //check available in this turn?
   g.checkAvailable = function() {
-    return (g.current_buy_in == g.bet)?true:false;
+    return (g.current_buy_in == g.bet);
   };
   
   // call only if checkAvailable is true! otherwise cards folded
@@ -32,7 +32,7 @@ module.exports = function(game_state){
   g.minimumBet = function() {
     var min_bet = g.current_buy_in-g.bet;
     if (min_bet <= 0) {
-      return g.check();
+      return g.doCheck();
     } else {
       return min_bet;
     }
