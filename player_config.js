@@ -6,7 +6,10 @@ module.exports = (function(){
     min_check_and_call: 22,
     min_call: 26,
     min_raise: 30,
-    min_allin: 40
+    min_allin: 40,
+    use_preflop: 1,
+    min_preflop: 15,
+    max_preflop_bet: 100
   };
 
   c.setConf = function(key, val){

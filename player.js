@@ -15,6 +15,20 @@ module.exports = {
     var minimumToRaise = conf.getConf('min_raise');
     var minimumToAllIn = conf.getConf('min_allin');
 
+    var min_preflop = conf.getConf('min_preflop');
+    var usePreFlop = conf.getConf('use_preflop');
+    var maxPreflopBet = conf.getConf('max_preflop_bet');
+
+    if (usePreFlop == 1 && game_state.community_cards.length==0 && handRank >= min_preflop) {
+      if (action.checkAvailable()) {
+        bet(action.doCheck());
+        return;
+      } else if (game_state.current_buy_in <= maxPreflopBet) {
+        bet(action.doCall());
+        return;
+      }
+    }
+
     if (handRank < minimumToCheck) {
       bet(action.doFold());
     } else if (handRank >= minimumToCheck && handRank < minimumToCall) {
