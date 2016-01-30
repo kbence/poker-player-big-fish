@@ -5,7 +5,7 @@ VALUES = {
 };
 
 function getPairValue(cards) {
-    return cards[0]['rank'] == card[1]['rank'] ? VALUES.pair : 0;
+    return cards[0]['rank'] == cards[1]['rank'] ? VALUES.pair : 0;
 }
 
 function getHandValue(cards) {
