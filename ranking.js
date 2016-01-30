@@ -49,12 +49,33 @@ function groupBy(items, field) {
     return results;
 }
 
+function sum(a, b) {
+    return a + b;
+}
+
+function byNumber(a, b) {
+    return a - b;
+}
+
+function rankToValue(str) {
+    return CARD_RANKS.indexOf(str.toLowerCase()) + 2;
+}
+
+function valueToRank(num) {
+    return CARD_RANKS[num - 2];
+}
+
+function numericValue(card) {
+    return rankToValue(card['rank']);
+}
+
 WEIGHTS = {
     numberOfPairs: fromArray([0, 10, 30]),
     numberOfDrills: fromArray([0, 35]),
     numberOfPokers: fromArray([0, 200]),
     numberOfFlushes: fromArray([0, 120]),
-    numberOfFulls: fromArray([0, 160])
+    numberOfFulls: fromArray([0, 160]),
+    numberOfStraights: fromArray([0, 80])
 };
 
 COUNTERS = {
@@ -101,6 +122,26 @@ COUNTERS = {
         }
 
         return (foundPair && foundDrill && containsOwn) ? 1 : 0;
+    },
+
+    numberOfStraights: function(cards) {
+        var ranks = Object.keys(groupBy(cards, 'rank')).map(rankToValue).sort(byNumber);
+        var consecutives = [], last = -1;
+
+        ranks.forEach(function(r) {
+            consecutives = (r == last + 1) ? consecutives.concat([r]) : [r];
+            last = r;
+        })
+
+        consecutives = consecutives.map(valueToRank);
+
+        if (consecutives.length >= 5 &&
+            (consecutives.indexOf(cards[0].rank.toLowerCase()) >= 0 || consecutives.indexOf(cards[1].rank.toLowerCase()) >= 0))
+        {
+            return 1;
+        }
+
+        return 0;
     }
 }
 
@@ -109,12 +150,7 @@ function getPairValue(cards) {
 }
 
 function getHandValue(cards) {
-    var value = 0
-
-    for (var c = 0; c < 2; c++) {
-        var rank = CARD_RANKS.indexOf(cards[c]['rank'].toLowerCase()) + 2;
-        value += rank;
-    }
+    var value = cards.slice(0, 2).map(numericValue).reduce(sum);
 
     for (var func in COUNTERS) {
         value += WEIGHTS[func](COUNTERS[func](cards));
@@ -129,5 +165,6 @@ module.exports = {
     numberOfPokers: COUNTERS.numberOfPokers,
     numberOfFlushes: COUNTERS.numberOfFlushes,
     numberOfFulls: COUNTERS.numberOfFulls,
+    numberOfStraights: COUNTERS.numberOfStraights,
     getHandValue: getHandValue
 }
