@@ -8,7 +8,7 @@ module.exports = {
 
   bet_request: function(game_state, bet) {
     var action = new Player_actions(game_state);
-    var handRank = ranking.getHandValue(game_state.players[game_state.in_action]["hole_cards"]);
+    var handRank = ranking.getHandValue(game_state.players[game_state.in_action]["hole_cards"].concat(game_state.community_cards));
     var minimumToCall = conf.getConf('min_call');
     var minimumToRaise = conf.getConf('min_raise');
 
