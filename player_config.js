@@ -4,23 +4,25 @@ module.exports = (function(){
   c.conf = {
     "A": {
       min_check: 15,
-      min_check_and_call: 17,
+      min_check_and_call: 16,
       min_call: 20,
       min_raise: 26,
       min_allin: 32,
       use_preflop: 1,
       min_preflop: 15,
-      max_preflop_bet: 120
+      max_preflop_bet: 120,
+      multiplier: 3
     },
     "B": {
       min_check: 20,
-      min_check_and_call: 22,
-      min_call: 26,
-      min_raise: 30,
-      min_allin: 40,
+      min_check_and_call: 21,
+      min_call: 24,
+      min_raise: 28,
+      min_allin: 34,
       use_preflop: 1,
       min_preflop: 15,
-      max_preflop_bet: 120
+      max_preflop_bet: 120,
+      multiplier: 2.5
     }
   };
 

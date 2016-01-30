@@ -25,6 +25,8 @@ module.exports = {
 
     var min_preflop = conf.getConf('min_preflop',conf_version);
 
+    var multiplier = conf.getConf('multiplier',conf_version);
+
     /*var maxPreflopBet = conf.getConf('max_preflop_bet',conf_version);
 
     if (usePreFlop == 1 && game_state.community_cards.length==0 && handRank >= min_preflop) {
@@ -47,7 +49,7 @@ module.exports = {
         if (handRank < minimumToCheckAndCall) {
           bet(action.doFold());
         } else {
-          if (game_state.minimum_raise*4 < game_state.current_buy_in) {
+          if (game_state.minimum_raise*multiplier < game_state.current_buy_in) {
             bet(action.doCall());
           } else {
             bet(action.doFold());
