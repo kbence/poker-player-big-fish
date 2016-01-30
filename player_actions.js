@@ -41,7 +41,11 @@ module.exports = function(game_state){
   g.doRaiseMin = function() {
     return g.current_buy_in - g.bet + g.minimum_raise;
   };
-  
+
+  g.doRaiseNum = function(num) {
+    return g.doRaiseMin()+num;
+  };
+
   //TODO: FIX MAX RAISE!
   g.doRaiseMax = function() {
     return g.doRaiseMin();
