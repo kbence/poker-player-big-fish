@@ -10,8 +10,12 @@ app.get('/', function(req, res){
   res.send(200, 'OK')
 });
 
-app.get('/conf/:confkey/:confval', function(req, res) {
-  conf.setConf(req.params.confkey, req.params.confval);
+app.get('/conf/:confver/:confkey/:confval', function(req, res) {
+  conf.setConf(req.params.confver, req.params.confkey, req.params.confval);
+  res.send(conf.conf);
+});
+
+app.get('/getconf', function(req, res) {
   res.send(conf.conf);
 });
 
